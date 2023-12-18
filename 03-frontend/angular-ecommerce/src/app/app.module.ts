@@ -10,7 +10,7 @@ import { ProductCategoryMenuComponent } from './components/product-category-menu
 
 // the order is important! The most specific routes should be first
 const routes: Routes = [
-  {path: 'category/:id', component: ProductListComponent},
+  {path: 'category/:id/:name', component: ProductListComponent},
   {path: 'category', component: ProductListComponent},
   {path: 'products', component: ProductListComponent},
   {path: '', redirectTo: '/products', pathMatch: 'full'},

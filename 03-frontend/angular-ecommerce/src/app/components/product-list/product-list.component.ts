@@ -13,6 +13,7 @@ export class ProductListComponent {
   products: Product[] = [];
 
   currentCategoryId: number = 1;
+  currentCategoryName: string = "";
 
   constructor(
     private productService: ProductService,
@@ -33,6 +34,7 @@ export class ProductListComponent {
     if (hasCategoryId) {
       // get the "id" param string. convert string to a number using the "+" symbol
       this.currentCategoryId = +this.route.snapshot.paramMap.get('id')!;
+      this.currentCategoryName = this.route.snapshot.paramMap.get('name') ?? "";
     } else {
       // default category id
       this.currentCategoryId = 1;
