@@ -15,4 +15,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     // will be exposed automatically
     // /api/products/search/findByCategoryId?id=2
     Page<Product> findByCategoryId(@Param("id") Long id, Pageable pageable);
+
+    // /api/products/search/findByNameContaining?name="book"
+    Page<Product> findByNameContaining(@Param("name") String name, Pageable pageable);
 }

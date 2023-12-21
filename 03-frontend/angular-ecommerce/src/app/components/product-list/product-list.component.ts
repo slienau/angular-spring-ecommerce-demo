@@ -14,6 +14,7 @@ export class ProductListComponent {
 
   currentCategoryId: number = 1;
   currentCategoryName: string = "";
+  searchMode: boolean = false;
 
   constructor(
     private productService: ProductService,
@@ -27,7 +28,15 @@ export class ProductListComponent {
   }
 
   private listProducts() {
+    this.searchMode = this.route.snapshot.paramMap.has('keyword');
+    if (this.searchMode) {
+      this.handleSearchProducts();
+    } else {
+      this.handleListProducts();
+    }
+  }
 
+  private handleListProducts() {
     // check if "id" parameter is available
     const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
 
@@ -41,6 +50,16 @@ export class ProductListComponent {
     }
 
     this.productService.getProductList(this.currentCategoryId).subscribe(
+      data => {
+        this.products = data;
+      }
+    );
+  }
+
+  private handleSearchProducts() {
+    const keyword: string = this.route.snapshot.paramMap.get('keyword')!;
+
+    this.productService.searchProducts(keyword).subscribe(
       data => {
         this.products = data;
       }
