@@ -40,6 +40,11 @@ export class ProductService {
     return this.httpClient.get<GetResponseProduct>(searchUrl)
       .pipe(map(response => response._embedded.products));
   }
+
+  getProduct(productId: number) {
+    const productUrl = `${this.baseUrl}/${productId}`;
+    return this.httpClient.get<Product>(productUrl);
+  }
 }
 
 interface GetResponseProduct {
