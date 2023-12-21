@@ -13,8 +13,14 @@ export class ProductListComponent {
   products: Product[] = [];
 
   currentCategoryId: number = 1;
+  previousCategoryId: number = 1;
   currentCategoryName: string = "";
   searchMode: boolean = false;
+
+  // pagination properties
+  currentPage: number = 1;
+  pageSize: number = 10;
+  totalElements: number = 0;
 
   constructor(
     private productService: ProductService,
@@ -27,7 +33,7 @@ export class ProductListComponent {
     });
   }
 
-  private listProducts() {
+  listProducts() {
     this.searchMode = this.route.snapshot.paramMap.has('keyword');
     if (this.searchMode) {
       this.handleSearchProducts();
@@ -49,9 +55,28 @@ export class ProductListComponent {
       this.currentCategoryId = 1;
     }
 
-    this.productService.getProductList(this.currentCategoryId).subscribe(
+    // Check if we have a different category than previous
+    // Note: Angular will reuse a component if it is currently being viewed
+    // If we have a different category id than previous, then set currentPage back to 1
+    if (this.previousCategoryId != this.currentCategoryId) {
+      this.currentPage = 1;
+    }
+
+    this.previousCategoryId = this.currentCategoryId;
+
+    console.log(`currentCategoryId=${this.currentCategoryId}, currentPage=${this.currentPage}`);
+
+    // get the products for the given category id
+    this.productService.getProductListPaginate(
+      this.currentPage - 1,
+      this.pageSize,
+      this.currentCategoryId
+    ).subscribe(
       data => {
-        this.products = data;
+        this.products = data._embedded.products;
+        this.currentPage = data.page.number + 1;
+        this.pageSize = data.page.size;
+        this.totalElements = data.page.totalElements;
       }
     );
   }
