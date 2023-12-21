@@ -90,4 +90,10 @@ export class ProductListComponent {
       }
     );
   }
+
+  updatePageSize(value: string) {
+    this.pageSize = +value;
+    this.currentPage = 1;
+    this.listProducts();
+  }
 }
