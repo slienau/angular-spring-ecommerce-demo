@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ProductService} from "../../services/product.service";
 import {Product} from "../../common/product";
@@ -8,7 +8,7 @@ import {Product} from "../../common/product";
   templateUrl: './product-list-grid.component.html',
   styleUrls: ['./product-list.component.css']
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnInit {
 
   products: Product[] = [];
 
@@ -21,6 +21,8 @@ export class ProductListComponent {
   currentPage: number = 1;
   pageSize: number = 10;
   totalElements: number = 0;
+
+  previousKeyword: string = "";
 
   constructor(
     private productService: ProductService,
@@ -72,17 +74,27 @@ export class ProductListComponent {
       this.pageSize,
       this.currentCategoryId
     ).subscribe(
-      data => {
-        this.products = data._embedded.products;
-        this.currentPage = data.page.number + 1;
-        this.pageSize = data.page.size;
-        this.totalElements = data.page.totalElements;
-      }
-    );
+      this.processResult());
   }
 
   private handleSearchProducts() {
     const keyword: string = this.route.snapshot.paramMap.get('keyword')!;
+
+    if (this.previousKeyword != keyword) {
+      this.currentPage = 1;
+    }
+
+    this.previousKeyword = keyword;
+
+    console.log(`keyword=${keyword}, currentPage=${this.currentPage}`);
+
+    this.productService.searchProductsPaginate(
+      this.currentPage - 1,
+      this.pageSize,
+      keyword
+    ).subscribe(
+      this.processResult()
+    );
 
     this.productService.searchProducts(keyword).subscribe(
       data => {
@@ -95,5 +107,14 @@ export class ProductListComponent {
     this.pageSize = +value;
     this.currentPage = 1;
     this.listProducts();
+  }
+
+  private processResult() {
+    return (data: any) => {
+      this.products = data._embedded.products;
+      this.currentPage = data.page.number + 1;
+      this.pageSize = data.page.size;
+      this.totalElements = data.page.totalElements;
+    }
   }
 }
