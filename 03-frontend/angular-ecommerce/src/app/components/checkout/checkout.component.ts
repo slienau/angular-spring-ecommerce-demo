@@ -50,9 +50,11 @@ export class CheckoutComponent {
       }),
     });
 
-    this.formService.getCreditCardMonths().subscribe((data) => {
-      this.creditCardMonths = data;
-    });
+    this.formService
+      .getCreditCardMonths(new Date().getMonth() + 1)
+      .subscribe((data) => {
+        this.creditCardMonths = data;
+      });
 
     this.formService.getCreditCardYears().subscribe((data) => {
       this.creditCardYears = data;
@@ -72,5 +74,21 @@ export class CheckoutComponent {
     } else {
       this.checkoutFormGroup.controls['billingAddress'].reset();
     }
+  }
+
+  handleExpirationYearChange() {
+    const creditCardFormGroup = this.checkoutFormGroup.get('creditCard');
+
+    const currentYear: number = new Date().getFullYear();
+    const selectedYear: number = Number(
+      creditCardFormGroup?.value.expirationYear,
+    );
+
+    const startMonth: number =
+      currentYear === selectedYear ? new Date().getMonth() + 1 : 1;
+
+    this.formService.getCreditCardMonths(startMonth).subscribe((data) => {
+      this.creditCardMonths = data;
+    });
   }
 }
