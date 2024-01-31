@@ -1,11 +1,13 @@
 package dev.appexpert.demo.ecommerce.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "address")
-@Data
+@Getter
+@Setter
 public class Address {
 
     @Id
