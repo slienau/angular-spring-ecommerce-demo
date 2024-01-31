@@ -3,8 +3,11 @@ package dev.appexpert.demo.ecommerce.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
-@Table(name="customer")
+@Table(name = "customer")
 @Data
 public class Customer {
 
@@ -21,4 +24,12 @@ public class Customer {
 
     @Column(name = "email")
     private String email;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private Set<Order> orders = new HashSet<>();
+
+    public void add(Order order) {
+        orders.add(order);
+        order.setCustomer(this);
+    }
 }
