@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
+import { CartService } from 'src/app/services/cart.service';
 import { FormService } from 'src/app/services/form.service';
 import { CustomValidators } from 'src/app/validators/custom-validators';
 
@@ -32,7 +33,10 @@ export class CheckoutComponent {
   constructor(
     private formBuilder: FormBuilder,
     private formService: FormService,
+    private cartService: CartService,
   ) {
+    this.reviewCartDetails();
+
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
         firstName: new FormControl('', [
@@ -123,6 +127,16 @@ export class CheckoutComponent {
     this.formService.getCountries().subscribe((data) => {
       console.log('Retrieved countries: ' + JSON.stringify(data));
       this.countries = data;
+    });
+  }
+
+  reviewCartDetails() {
+    this.cartService.totalQuantity.subscribe((data) => {
+      this.totalQuantity = data;
+    });
+
+    this.cartService.totalPrice.subscribe((data) => {
+      this.totalPrice = data;
     });
   }
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CartItem } from '../common/cart-item';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -8,8 +8,12 @@ import { Subject } from 'rxjs';
 export class CartService {
   cartItems: CartItem[] = [];
 
-  totalPrice: Subject<number> = new Subject<number>();
-  totalQuantity: Subject<number> = new Subject<number>();
+  // see https://www.learnrxjs.io/learn-rxjs/subjects for the different 'Observable' types
+  // totalPrice: Subject<number> = new Subject<number>(); // Subject: No initial value or replay behavior.
+  // totalQuantity: Subject<number> = new Subject<number>();
+
+  totalPrice: Subject<number> = new BehaviorSubject<number>(0); // BehaviorSubject: Requires an initial value and emits its current value (last emitted item) to new subscribers.
+  totalQuantity: Subject<number> = new BehaviorSubject<number>(0);
 
   constructor() {}
 
