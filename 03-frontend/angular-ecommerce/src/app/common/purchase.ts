@@ -3,10 +3,30 @@ import { Customer } from './customer';
 import { Order } from './order';
 import { OrderItem } from './order-item';
 
-export interface Purchase {
+export class Purchase {
   customer: Customer;
   shippingAddress: Address;
   billingAddress: Address;
   order: Order;
   orderItems: OrderItem[];
+
+  constructor({
+    customer,
+    shippingAddress,
+    billingAddress,
+    order,
+    orderItems,
+  }: {
+    customer: Customer;
+    shippingAddress: Address;
+    billingAddress: Address;
+    order: Order;
+    orderItems: OrderItem[];
+  }) {
+    this.customer = customer;
+    this.shippingAddress = shippingAddress;
+    this.billingAddress = billingAddress;
+    this.order = order;
+    this.orderItems = orderItems;
+  }
 }
