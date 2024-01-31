@@ -56,7 +56,7 @@
                   <div
                     *ngIf="
                       lastName?.errors?.['required'] ||
-                      firstName?.errors?.['notOnlyWhitespace']
+                      lastName?.errors?.['notOnlyWhitespace']
                     "
                   >
                     Last Name is required
@@ -114,6 +114,19 @@
                     {{ country.name }}
                   </option>
                 </select>
+
+                <div
+                  *ngIf="
+                    shippingAddressCountry?.invalid &&
+                    (shippingAddressCountry?.dirty ||
+                      shippingAddressCountry?.touched)
+                  "
+                  class="alert alert-danger"
+                >
+                  <div *ngIf="shippingAddressCountry?.errors?.['required']">
+                    Country is required
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -125,6 +138,28 @@
             <div class="col-md-9">
               <div class="input-space">
                 <input formControlName="street" type="text" />
+
+                <div
+                  *ngIf="
+                    shippingAddressStreet?.invalid &&
+                    (shippingAddressStreet?.dirty ||
+                      shippingAddressStreet?.touched)
+                  "
+                  class="alert alert-danger"
+                >
+                  <div
+                    *ngIf="
+                      shippingAddressStreet?.errors?.['required'] ||
+                      shippingAddressStreet?.errors?.['notOnlyWhitespace']
+                    "
+                  >
+                    Street is required
+                  </div>
+
+                  <div *ngIf="shippingAddressStreet?.errors?.['minlength']">
+                    Street must be at least 2 characters long
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -136,6 +171,27 @@
             <div class="col-md-9">
               <div class="input-space">
                 <input formControlName="city" type="text" />
+
+                <div
+                  *ngIf="
+                    shippingAddressCity?.invalid &&
+                    (shippingAddressCity?.dirty || shippingAddressCity?.touched)
+                  "
+                  class="alert alert-danger"
+                >
+                  <div
+                    *ngIf="
+                      shippingAddressCity?.errors?.['required'] ||
+                      shippingAddressCity?.errors?.['notOnlyWhitespace']
+                    "
+                  >
+                    City is required
+                  </div>
+
+                  <div *ngIf="shippingAddressCity?.errors?.['minlength']">
+                    City must be at least 2 characters long
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -153,6 +209,19 @@
                     {{ state.name }}
                   </option>
                 </select>
+
+                <div
+                  *ngIf="
+                    shippingAddressState?.invalid &&
+                    (shippingAddressState?.dirty ||
+                      shippingAddressState?.touched)
+                  "
+                  class="alert alert-danger"
+                >
+                  <div *ngIf="shippingAddressState?.errors?.['required']">
+                    State is required
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -163,6 +232,28 @@
             <div class="col-md-9">
               <div class="input-space">
                 <input formControlName="zipCode" type="text" />
+
+                <div
+                  *ngIf="
+                    shippingAddressZipCode?.invalid &&
+                    (shippingAddressZipCode?.dirty ||
+                      shippingAddressZipCode?.touched)
+                  "
+                  class="alert alert-danger"
+                >
+                  <div
+                    *ngIf="
+                      shippingAddressZipCode?.errors?.['required'] ||
+                      shippingAddressZipCode?.errors?.['notOnlyWhitespace']
+                    "
+                  >
+                    Zip code is required
+                  </div>
+
+                  <div *ngIf="shippingAddressZipCode?.errors?.['minlength']">
+                    Zip code must be at least 2 characters long
+                  </div>
+                </div>
               </div>
             </div>
           </div>
