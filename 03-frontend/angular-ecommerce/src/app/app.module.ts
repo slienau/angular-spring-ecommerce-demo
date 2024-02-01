@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
+import { Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule, Routes } from '@angular/router';
+import { Router, RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
@@ -20,16 +20,33 @@ import { OktaAuth } from '@okta/okta-auth-js';
 import appConfig from './config/app-config';
 import {
   OKTA_CONFIG,
+  OktaAuthGuard,
   OktaAuthModule,
   OktaCallbackComponent,
 } from '@okta/okta-angular';
+import { MembersPageComponent } from './components/members-page/members-page.component';
 
 const oktaAuth = new OktaAuth(appConfig.oidc);
+
+function sendToLoginPage(oktaAuth: OktaAuth, injector: Injector) {
+  // injector can access any service available within the application
+  const router = injector.get(Router);
+
+  router.navigate(['/login']);
+}
 
 // the order is important! The most specific routes should be first
 const routes: Routes = [
   { path: 'login/callback', component: OktaCallbackComponent },
   { path: 'login', component: LoginComponent },
+  {
+    path: 'members',
+    component: MembersPageComponent,
+    canActivate: [OktaAuthGuard],
+    data: {
+      onAuthRequired: sendToLoginPage,
+    },
+  },
   { path: 'cart-details', component: CartDetailsComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'products/:id', component: ProductDetailsComponent },
@@ -53,6 +70,7 @@ const routes: Routes = [
     CheckoutComponent,
     LoginComponent,
     LoginStatusComponent,
+    MembersPageComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
