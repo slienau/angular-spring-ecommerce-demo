@@ -15,9 +15,21 @@ import { CartDetailsComponent } from './components/cart-details/cart-details.com
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
+import { LoginStatusComponent } from './components/login-status/login-status.component';
+import { OktaAuth } from '@okta/okta-auth-js';
+import appConfig from './config/app-config';
+import {
+  OKTA_CONFIG,
+  OktaAuthModule,
+  OktaCallbackComponent,
+} from '@okta/okta-angular';
+
+const oktaAuth = new OktaAuth(appConfig.oidc);
 
 // the order is important! The most specific routes should be first
 const routes: Routes = [
+  { path: 'login/callback', component: OktaCallbackComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'cart-details', component: CartDetailsComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'products/:id', component: ProductDetailsComponent },
@@ -40,6 +52,7 @@ const routes: Routes = [
     CartDetailsComponent,
     CheckoutComponent,
     LoginComponent,
+    LoginStatusComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -47,8 +60,9 @@ const routes: Routes = [
     HttpClientModule,
     NgbModule,
     ReactiveFormsModule,
+    OktaAuthModule,
   ],
-  providers: [ProductService],
+  providers: [ProductService, { provide: OKTA_CONFIG, useValue: { oktaAuth } }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
