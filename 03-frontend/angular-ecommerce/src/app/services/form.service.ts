@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { Observable, map, of } from 'rxjs';
 import { Country } from '../common/country';
 import { State } from '../common/state';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FormService {
-  private countriesUrl = 'https://localhost:8443/api/countries';
-  private statesUrl = 'https://localhost:8443/api/states';
+  private countriesUrl = `${environment.apiUrl}/countries`;
+  private statesUrl = `${environment.apiUrl}/states`;
 
   constructor(private httpClient: HttpClient) {}
 
