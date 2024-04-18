@@ -30,8 +30,14 @@ export class LoginStatusComponent implements OnInit {
       return;
     }
     this.oktaAuth.getUser().then((result) => {
-      this.userFullName = result.name as string;
-      this.storage.setItem('userEmail', JSON.stringify(result.email));
+      if (result.name !== undefined) {
+        this.userFullName = result.name as string;
+      }
+      if (result.email !== undefined) {
+        this.storage.setItem('userEmail', JSON.stringify(result.email));
+      } else {
+        throw Error('No user E-Mail provided by okta!');
+      }
     });
   }
 
