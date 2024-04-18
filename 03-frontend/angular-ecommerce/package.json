@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --ssl=true --ssl-key=./ssl-localhost/localhost.key --ssl-cert=./ssl-localhost/localhost.crt",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "generate:cert": "openssl req -x509 -out ssl-localhost/localhost.crt -keyout ssl-localhost/localhost.key -newkey rsa:2048 -nodes -sha256 -days 365 -config localhost.conf"
   },
   "private": true,
   "dependencies": {
